@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#111827">
+  <title>سبورة المذاكرة الذكية</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <main id="app" class="app">
+
+    <canvas id="boardCanvas" aria-label="سبورة المذاكرة"></canvas>
+
+    <div id="boardStatus" class="board-status" aria-live="polite">
+      جاهزة
+    </div>
+
+    <!-- الشريط العلوي -->
+    <header class="topbar">
+
+      <button
+        id="boardsBtn"
+        class="icon-btn"
+        title="الملفات والسبورات"
+        aria-label="الملفات والسبورات">
+        📚
+      </button>
+
+      <button
+        id="fileBtn"
+        class="icon-btn"
+        title="حفظ"
+        aria-label="حفظ">
+        💾
+      </button>
+
+      <div class="crumbs">
+        <span id="folderTitle">مذاكرتي</span>
+        <span class="sep">/</span>
+        <span id="boardTitle">سبورة 1</span>
+      </div>
+
+      <button
+        id="fullscreenBtn"
+        class="icon-btn"
+        title="ملء الشاشة"
+        aria-label="ملء الشاشة">
+        ⛶
+      </button>
+
+    </header>
+
+    <!-- الأدوات الأساسية -->
+    <section
+      id="floatingDock"
+      class="floating-dock"
+      aria-label="أدوات السبورة">
+
+      <button
+        class="dock-btn active"
+        data-tool="pen"
+        title="قلم">
+        ✏️
+      </button>
+
+      <button
+        class="dock-btn"
+        data-tool="eraser"
+        title="ممحاة">
+        🧽
+      </button>
+
+      <button
+        class="dock-btn"
+        data-tool="select"
+        title="تحديد وتحريك">
+        ⬚
+      </button>
+
+      <button
+        class="dock-btn"
+        data-tool="text"
+        title="نص">
+        T
+      </button>
+
+      <button
+        class="dock-btn"
+        id="quickColorBtn"
+        title="اللون">
+        🎨
+      </button>
+
+      <button
+        class="dock-btn"
+        id="toolsBtn"
+        title="كل الأدوات">
+        ⋮
+      </button>
+
+    </section>
+
+    <!-- لوحة الألوان -->
+    <section
+      id="quickColorPanel"
+      class="popup-panel color-panel hidden">
+
+      <div class="panel-title">
+        لون القلم
+      </div>
+
+      <div
+        class="color-grid"
+        id="colorGrid">
+
+        <button
+          class="color-dot"
+          data-color="#111827"
+          style="--c:#111827">
+        </button>
+
+        <button
+          class="color-dot"
+          data-color="#ffffff"
+          style="--c:#ffffff">
+        </button>
+
+        <button
+          class="color-dot"
+          data-color="#ef4444"
+          style="--c:#ef4444">
+        </button>
+
+        <button
+          class="color-dot"
+          data-color="#f59e0b"
+          style="--c:#f59e0b">
+        </button>
+
+        <button
+          class="color-dot"
+          data-color="#22c55e"
+          style="--c:#22c55e">
+        </button>
+
+        <button
+          class="color-dot"
+          data-color="#3b82f6"
+          style="--c:#3b82f6">
+        </button>
+
+        <button
+          class="color-dot"
+          data-color="#8b5cf6"
+          style="--c:#8b5cf6">
+        </button>
+
+        <button
+          class="color-dot"
+          data-color="#ec4899"
+          style="--c:#ec4899">
+        </button>
+
+        <button
+          class="color-dot"
+          data-color="#06b6d4"
+          style="--c:#06b6d4">
+        </button>
+
+      </div>
+
+      <label class="range-row">
+        الحجم
+
+        <input
+          id="penSize"
+          type="range"
+          min="1"
+          max="50"
+          value="5">
+
+        <output id="penSizeValue">
+          5
+        </output>
+      </label>
+
+      <div class="tool-row">
+
+        <button
+          id="customColorBtn"
+          class="small-btn">
+          لون مخصص
+        </button>
+
+        <button
+          id="highlighterBtn"
+          class="small-btn">
+          Highlighter
+        </button>
+
+      </div>
+
+    </section>
+
+    <!-- كل الأدوات -->
+    <section
+      id="toolsPanel"
+      class="popup-panel tools-panel hidden">
+
+      <div class="panel-title">
+        كل الأدوات
+      </div>
+
+      <div class="tools-grid">
+
+        <button class="tool-card" data-action="calculator">
+          🔢
+          <span>الحسبة</span>
+        </button>
+
+        <button class="tool-card" data-action="shapes">
+          📐
+          <span>الأشكال</span>
+        </button>
+
+        <button class="tool-card" data-action="graph">
+          📊
+          <span>رسم بياني</span>
+        </button>
+
+        <button class="tool-card" data-action="background">
+          🧩
+          <span>الخلفية</span>
+        </button>
+
+        <button class="tool-card" data-action="image">
+          🖼️
+          <span>صورة</span>
+        </button>
+
+        <button class="tool-card" data-action="note">
+          🗒️
+          <span>ملاحظة</span>
+        </button>
+
+        <button class="tool-card" data-action="timer">
+          ⏱️
+          <span>المؤقت</span>
+        </button>
+
+        <button class="tool-card" data-action="undo">
+          ↩️
+          <span>تراجع</span>
+        </button>
+
+        <button class="tool-card" data-action="redo">
+          ↪️
+          <span>إعادة</span>
+        </button>
+
+        <button class="tool-card" data-action="newBoard">
+          ➕
+          <span>سبورة جديدة</span>
+        </button>
+
+        <button class="tool-card" data-action="save">
+          💾
+          <span>حفظ</span>
+        </button>
+
+        <button class="tool-card" data-action="export">
+          📸
+          <span>تصدير PNG</span>
+        </button>
+
+        <button class="tool-card" data-action="clear">
+          🗑️
+          <span>مسح الكل</span>
+        </button>
+
+      </div>
+    </section>
+
+    <!-- الأشكال -->
+    <section
+      id="shapePanel"
+      class="popup-panel shape-panel hidden">
+
+      <div class="panel-title">
+        الأشكال
+      </div>
+
+      <div class="tools-grid compact">
+
+        <button
+          class="tool-card"
+          data-shape="line">
+          ╱
+          <span>خط</span>
+        </button>
+
+        <button
+          class="tool-card"
+          data-shape="arrow">
+          ➜
+          <span>سهم</span>
+        </button>
+
+        <button
+          class="tool-card"
+          data-shape="rect">
+          ▭
+          <span>مستطيل</span>
+        </button>
+
+        <button
+          class="tool-card"
+          data-shape="circle">
+          ○
+          <span>دائرة</span>
+        </button>
+
+        <button
+          class="tool-card"
+          data-shape="triangle">
+          △
+          <span>مثلث</span>
+        </button>
+
+      </div>
+
+    </section>
+
+    <!-- اختيار صورة -->
+    <input
+      id="imageInput"
+      type="file"
+      accept="image/*"
+      hidden>
+
+    <!-- مدير الملفات والسبورات -->
+    <aside
+      id="manager"
+      class="overlay hidden"
+      aria-label="إدارة الملفات والسبورات">
+
+      <div class="manager-card">
+
+        <div class="modal-head">
+
+          <h2>
+            📚 ملفات السبورة
+          </h2>
+
+          <button
+            class="icon-btn close-modal"
+            data-close="manager">
+            ✕
+          </button>
+
+        </div>
+
+        <div class="manager-actions">
+
+          <button
+            id="newFolderBtn"
+            class="primary-btn">
+            ＋ ملف جديد
+          </button>
+
+          <button
+            id="newBoardBtn"
+            class="secondary-btn">
+            ＋ سبورة جديدة
+          </button>
+
+        </div>
+
+        <div class="manager-layout">
+
+          <div
+            class="folder-list"
+            id="folderList">
+          </div>
+
+          <div
+            class="board-list"
+            id="boardList">
+          </div>
+
+        </div>
+
+      </div>
+
+    </aside>
+
+    <!-- النوافذ المنبثقة -->
+    <div id="modalHost"></div>
+
+  </main>
+
+  <script src="script.js" defer></script>
+</body>
+    </html>
